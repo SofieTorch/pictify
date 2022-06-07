@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:ffi';
 import 'dart:io';
 import 'dart:ui' as ui;
@@ -25,8 +24,8 @@ final BrightnessDartFunction _changeBrightness =
 
 Future<Uint8List> changeBrightness(
     ImageProvider provider, int brightness) async {
-  final image = await imagefromProvider(provider);
-  final bitmap = await uInt8ListFromImage(image);
+  final image = await getImagefromProvider(provider);
+  final bitmap = await getUInt8ListFromImage(image);
   final header = RGBA32Header(image.width, image.height);
 
   final length = bitmap.length;
@@ -42,7 +41,7 @@ Future<Uint8List> changeBrightness(
   return header.headedImage;
 }
 
-Future<ui.Image> imagefromProvider(ImageProvider provider) async {
+Future<ui.Image> getImagefromProvider(ImageProvider provider) async {
   final Completer completer = Completer<ImageInfo>();
   final ImageStream stream = provider.resolve(const ImageConfiguration());
   final listener = ImageStreamListener(
@@ -59,7 +58,7 @@ Future<ui.Image> imagefromProvider(ImageProvider provider) async {
   return image;
 }
 
-Future<Uint8List> uInt8ListFromImage(ui.Image image) async {
+Future<Uint8List> getUInt8ListFromImage(ui.Image image) async {
   final ByteData? byteData = await image.toByteData();
   if (byteData == null) {
     throw StateError("Couldn't serialize image into bytes");
