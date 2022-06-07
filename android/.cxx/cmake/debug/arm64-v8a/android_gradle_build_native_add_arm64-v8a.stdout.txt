@@ -1,0 +1,2 @@
+ninja: Entering directory `/home/dell/Dev/pictify/android/.cxx/cmake/debug/arm64-v8a'
+ninja: no work to do.

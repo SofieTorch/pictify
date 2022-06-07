@@ -1,0 +1,43 @@
+{
+  "stringTable": {
+    "0": "/home/dell/Dev/pictify/android/.cxx/cmake/debug/armeabi-v7a",
+    "1": "--target=armv7-none-linux-androideabi16 --gcc-toolchain=/home/dell/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/linux-x86_64 --sysroot=/home/dell/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/linux-x86_64/sysroot -Dnative_add_EXPORTS -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security -O0 -fno-limit-debug-info -fPIC"
+  },
+  "buildFiles": [
+    "/home/dell/Dev/pictify/android/CMakeLists.txt",
+    "/home/dell/Android/Sdk/ndk/21.1.6352462/build/cmake/android.toolchain.cmake",
+    "/home/dell/Android/Sdk/ndk/21.1.6352462/build/cmake/platforms.cmake"
+  ],
+  "cleanCommands": [
+    "/home/dell/Android/Sdk/cmake/3.10.2.4988404/bin/ninja -C \"/home/dell/Dev/pictify/android/.cxx/cmake/debug/armeabi-v7a\" clean"
+  ],
+  "buildTargetsCommand": "/home/dell/Android/Sdk/cmake/3.10.2.4988404/bin/ninja  -C \"/home/dell/Dev/pictify/android/.cxx/cmake/debug/armeabi-v7a\" {LIST_OF_TARGETS_TO_BUILD}",
+  "libraries": {
+    "native_add-Debug-armeabi-v7a": {
+      "buildCommand": "/home/dell/Android/Sdk/cmake/3.10.2.4988404/bin/ninja -C \"/home/dell/Dev/pictify/android/.cxx/cmake/debug/armeabi-v7a\" native_add",
+      "buildType": "debug",
+      "toolchain": "7878350",
+      "abi": "armeabi-v7a",
+      "artifactName": "native_add",
+      "files": [
+        {
+          "src": "/home/dell/Dev/pictify/ios/Classes/native_add.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        }
+      ],
+      "headers": [],
+      "output": "/home/dell/Dev/pictify/example/build/pictify/intermediates/cmake/debug/obj/armeabi-v7a/libnative_add.so",
+      "runtimeFiles": []
+    }
+  },
+  "toolchains": {
+    "7878350": {
+      "cppCompilerExecutable": "/home/dell/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++"
+    }
+  },
+  "cFileExtensions": [],
+  "cppFileExtensions": [
+    "cpp"
+  ]
+}
