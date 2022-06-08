@@ -1,7 +1,0 @@
-Executable : /home/dell/Android/Sdk/cmake/3.10.2.4988404/bin/ninja
-arguments : 
--C
-/home/dell/Dev/pictify/android/.cxx/cmake/debug/x86_64
-native_add
-jvmArgs : 
-
