@@ -61,7 +61,18 @@ class _MyAppState extends State<MyApp> {
           Image.asset('assets/image-1080p.jpeg'),
           FutureBuilder(
             future: changeBrightness(
-                const AssetImage('assets/image-1080p.jpeg'), -50),
+                const AssetImage('assets/image-1080p.jpeg'), 127),
+            builder: (_, AsyncSnapshot<Uint8List> snapshot) {
+              if (snapshot.hasData) {
+                Uint8List bitmap = snapshot.data!;
+                Image imageRes = Image.memory(bitmap);
+                return imageRes;
+              }
+              return const CircularProgressIndicator();
+            },
+          ),
+          FutureBuilder(
+            future: toGrayscale(const AssetImage('assets/image-1080p.jpeg')),
             builder: (_, AsyncSnapshot<Uint8List> snapshot) {
               if (snapshot.hasData) {
                 Uint8List bitmap = snapshot.data!;

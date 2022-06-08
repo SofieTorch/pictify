@@ -26,7 +26,7 @@ native_add(int32_t x, int32_t y)
 
 extern "C" __attribute__((visibility("default"))) __attribute__((used))
 uint8_t *
-change_brightness(uint8_t *bitmap, int8_t brightness, int32_t length)
+change_brightness(uint8_t *bitmap, int16_t brightness, uint32_t length)
 {
     for (int i = 0; i < length; i += 4)
     {
@@ -39,7 +39,7 @@ change_brightness(uint8_t *bitmap, int8_t brightness, int32_t length)
 
 extern "C" __attribute__((visibility("default"))) __attribute__((used))
 uint8_t *
-to_grayscale(uint8_t *bitmap, int8_t brightness, int32_t length)
+to_grayscale(uint8_t *bitmap, uint32_t length)
 {
     for (int i = 0; i < length; i += 4)
     {
