@@ -28,17 +28,24 @@ Future<Uint8List> changeBrightness(
       (pointer, length) => _changeBrightness(pointer, brightness, length));
 }
 
-typedef GrayscaleFFIFunction = Pointer<Uint8> Function(
+typedef SimpleTransformationFFIFunc = Pointer<Uint8> Function(
     Pointer<Uint8> bitmap, Uint32 length);
 
-typedef GrayscaleDartFunction = Pointer<Uint8> Function(
+typedef SimpleTransformationDartFunc = Pointer<Uint8> Function(
     Pointer<Uint8> bitmap, int length);
 
-final GrayscaleDartFunction _toGrayscale =
-    nativeAddLib.lookupFunction<GrayscaleFFIFunction, GrayscaleDartFunction>(
-        'to_grayscale');
+final SimpleTransformationDartFunc _toGrayscale = nativeAddLib.lookupFunction<
+    SimpleTransformationFFIFunc, SimpleTransformationDartFunc>('to_grayscale');
 
 Future<Uint8List> toGrayscale(ImageProvider provider) {
   return Process.transformImage(
       provider, (pointer, length) => _toGrayscale(pointer, length));
+}
+
+final SimpleTransformationDartFunc _invert = nativeAddLib.lookupFunction<
+    SimpleTransformationFFIFunc, SimpleTransformationDartFunc>('invert');
+
+Future<Uint8List> invert(ImageProvider provider) {
+  return Process.transformImage(
+      provider, (pointer, length) => _invert(pointer, length));
 }

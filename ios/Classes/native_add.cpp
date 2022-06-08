@@ -55,3 +55,20 @@ to_grayscale(uint8_t *bitmap, uint32_t length)
     }
     return bitmap;
 }
+
+extern "C" __attribute__((visibility("default"))) __attribute__((used))
+uint8_t *
+invert(uint8_t *bitmap, uint32_t length)
+{
+    for (int i = 0; i < length; i += 4)
+    {
+        float red = bitmap[i] * -1;
+        float green = bitmap[i + 1] * -1;
+        float blue = bitmap[i + 2] * -1;
+
+        bitmap[i] = clamp(red + 255);
+        bitmap[i + 1] = clamp(green + 255);
+        bitmap[i + 2] = clamp(blue + 255);
+    }
+    return bitmap;
+}

@@ -82,6 +82,17 @@ class _MyAppState extends State<MyApp> {
               return const CircularProgressIndicator();
             },
           ),
+          FutureBuilder(
+            future: invert(const AssetImage('assets/image-1080p.jpeg')),
+            builder: (_, AsyncSnapshot<Uint8List> snapshot) {
+              if (snapshot.hasData) {
+                Uint8List bitmap = snapshot.data!;
+                Image imageRes = Image.memory(bitmap);
+                return imageRes;
+              }
+              return const CircularProgressIndicator();
+            },
+          ),
         ])),
       ),
     );
