@@ -60,6 +60,26 @@ class _MyAppState extends State<MyApp> {
             child: Column(children: [
           Image.asset('assets/image-1080p.jpeg'),
           FutureBuilder(
+            future: toGrayscale(const AssetImage('assets/image-1080p.jpeg')),
+            builder: (_, AsyncSnapshot<Uint8List> snapshot) {
+              if (snapshot.hasData) {
+                Uint8List bitmap = snapshot.data!;
+                return FutureBuilder(
+                  future: applyThreshold(MemoryImage(bitmap), 150),
+                  builder: (_, AsyncSnapshot<Uint8List> snapshot) {
+                    if (snapshot.hasData) {
+                      Uint8List bitmap = snapshot.data!;
+                      Image imageRes = Image.memory(bitmap);
+                      return imageRes;
+                    }
+                    return const CircularProgressIndicator();
+                  },
+                );
+              }
+              return const CircularProgressIndicator();
+            },
+          ),
+          FutureBuilder(
             future: changeBrightness(
                 const AssetImage('assets/image-1080p.jpeg'), 127),
             builder: (_, AsyncSnapshot<Uint8List> snapshot) {

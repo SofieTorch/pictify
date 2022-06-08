@@ -16,7 +16,7 @@ typedef BrightnessFFIFunction = Pointer<Uint8> Function(
 typedef BrightnessDartFunction = Pointer<Uint8> Function(
     Pointer<Uint8> bitmap, int brightness, int length);
 
-final BrightnessDartFunction _changeBrightness =
+final _changeBrightness =
     nativeAddLib.lookupFunction<BrightnessFFIFunction, BrightnessDartFunction>(
         'change_brightness');
 
@@ -34,18 +34,36 @@ typedef SimpleTransformationFFIFunc = Pointer<Uint8> Function(
 typedef SimpleTransformationDartFunc = Pointer<Uint8> Function(
     Pointer<Uint8> bitmap, int length);
 
-final SimpleTransformationDartFunc _toGrayscale = nativeAddLib.lookupFunction<
-    SimpleTransformationFFIFunc, SimpleTransformationDartFunc>('to_grayscale');
+final _toGrayscale = nativeAddLib.lookupFunction<SimpleTransformationFFIFunc,
+    SimpleTransformationDartFunc>('to_grayscale');
 
 Future<Uint8List> toGrayscale(ImageProvider provider) {
   return Process.transformImage(
       provider, (pointer, length) => _toGrayscale(pointer, length));
 }
 
-final SimpleTransformationDartFunc _invert = nativeAddLib.lookupFunction<
-    SimpleTransformationFFIFunc, SimpleTransformationDartFunc>('invert');
+final _invert = nativeAddLib.lookupFunction<SimpleTransformationFFIFunc,
+    SimpleTransformationDartFunc>('invert');
 
 Future<Uint8List> invert(ImageProvider provider) {
   return Process.transformImage(
       provider, (pointer, length) => _invert(pointer, length));
+}
+
+typedef ThresholdFFIFunction = Pointer<Uint8> Function(
+    Pointer<Uint8> bitmap, Uint32 length, Int16 threshold);
+
+typedef ThresholdDartFunction = Pointer<Uint8> Function(
+    Pointer<Uint8> bitmap, int length, int threshold);
+
+final _applyThreshold =
+    nativeAddLib.lookupFunction<ThresholdFFIFunction, ThresholdDartFunction>(
+        'apply_threshold');
+
+Future<Uint8List> applyThreshold(
+  ImageProvider provider,
+  int threshold,
+) {
+  return Process.transformImage(provider,
+      (pointer, length) => _applyThreshold(pointer, length, threshold));
 }

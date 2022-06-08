@@ -72,3 +72,34 @@ invert(uint8_t *bitmap, uint32_t length)
     }
     return bitmap;
 }
+
+extern "C" __attribute__((visibility("default"))) __attribute__((used))
+uint8_t *
+apply_threshold(uint8_t *bitmap, uint32_t length, int16_t threshold)
+{
+    for (int i = 0; i < length; i += 4)
+    {
+        float red = bitmap[i];
+        float green = bitmap[i + 1];
+        float blue = bitmap[i + 2];
+
+        if (red != green || green != blue || blue != red)
+        {
+            return bitmap;
+        }
+
+        if (red > threshold)
+        {
+            bitmap[i] = 255;
+            bitmap[i + 1] = 255;
+            bitmap[i + 2] = 255;
+        }
+        else
+        {
+            bitmap[i] = 0;
+            bitmap[i + 1] = 0;
+            bitmap[i + 2] = 0;
+        }
+    }
+    return bitmap;
+}
