@@ -1,11 +1,5 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
-import 'dart:async';
-
-import 'package:flutter/services.dart';
-import 'package:pictify/native_brightness.dart';
-import 'package:pictify/pictify.dart';
+import 'package:pictify/pictify.dart' as pic;
 
 void main() {
   runApp(const MyApp());
@@ -19,34 +13,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
+  double _valueBrightness = 20;
+
+  late pic.Image image;
 
   @override
   void initState() {
     super.initState();
-    initPlatformState();
-  }
-
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
-    try {
-      platformVersion =
-          await Pictify.platformVersion ?? 'Unknown platform version';
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
   }
 
   @override
@@ -60,61 +33,87 @@ class _MyAppState extends State<MyApp> {
             child: Column(children: [
           Image.asset('assets/image-1080p.jpeg'),
           FutureBuilder(
-            future: toGrayscale(const AssetImage('assets/image-1080p.jpeg')),
-            builder: (_, AsyncSnapshot<Uint8List> snapshot) {
-              if (snapshot.hasData) {
-                Uint8List bitmap = snapshot.data!;
-                return FutureBuilder(
-                  future: applyThreshold(MemoryImage(bitmap), 150),
-                  builder: (_, AsyncSnapshot<Uint8List> snapshot) {
-                    if (snapshot.hasData) {
-                      Uint8List bitmap = snapshot.data!;
-                      Image imageRes = Image.memory(bitmap);
-                      return imageRes;
-                    }
-                    return const CircularProgressIndicator();
-                  },
-                );
+            future:
+                pic.Image.create(const AssetImage('assets/image-1080p.jpeg')),
+            builder: (_, AsyncSnapshot<pic.Image> snapshot) {
+              if (!snapshot.hasData) {
+                return const CircularProgressIndicator();
               }
-              return const CircularProgressIndicator();
-            },
-          ),
-          FutureBuilder(
-            future: changeBrightness(
-                const AssetImage('assets/image-1080p.jpeg'), 127),
-            builder: (_, AsyncSnapshot<Uint8List> snapshot) {
-              if (snapshot.hasData) {
-                Uint8List bitmap = snapshot.data!;
-                Image imageRes = Image.memory(bitmap);
-                return imageRes;
-              }
-              return const CircularProgressIndicator();
-            },
-          ),
-          FutureBuilder(
-            future: toGrayscale(const AssetImage('assets/image-1080p.jpeg')),
-            builder: (_, AsyncSnapshot<Uint8List> snapshot) {
-              if (snapshot.hasData) {
-                Uint8List bitmap = snapshot.data!;
-                Image imageRes = Image.memory(bitmap);
-                return imageRes;
-              }
-              return const CircularProgressIndicator();
-            },
-          ),
-          FutureBuilder(
-            future: invert(const AssetImage('assets/image-1080p.jpeg')),
-            builder: (_, AsyncSnapshot<Uint8List> snapshot) {
-              if (snapshot.hasData) {
-                Uint8List bitmap = snapshot.data!;
-                Image imageRes = Image.memory(bitmap);
-                return imageRes;
-              }
-              return const CircularProgressIndicator();
+
+              image = snapshot.data!;
+              final grayImage = const pic.Grayscale().apply(image);
+
+              return Column(
+                children: [
+                  Image.memory(
+                    pic.Brightness(
+                      brightness: _valueBrightness.round(),
+                    ).apply(image).content,
+                    cacheHeight: image.height,
+                    gaplessPlayback: true,
+                  ),
+                  Slider(
+                    min: -256,
+                    max: 255,
+                    value: _valueBrightness,
+                    onChanged: (value) {
+                      setState(() {
+                        _valueBrightness = value;
+                      });
+                    },
+                  ),
+                  ThresholdedImage(grayImage),
+                  Image.memory(
+                    const pic.Grayscale().apply(image).content,
+                    gaplessPlayback: true,
+                  ),
+                  Image.memory(
+                    const pic.Invert().apply(image).content,
+                    gaplessPlayback: true,
+                  ),
+                ],
+              );
             },
           ),
         ])),
       ),
+    );
+  }
+}
+
+class ThresholdedImage extends StatefulWidget {
+  const ThresholdedImage(this.image, {Key? key}) : super(key: key);
+
+  final pic.Image image;
+
+  @override
+  State<ThresholdedImage> createState() => _ThresholdedImageState();
+}
+
+class _ThresholdedImageState extends State<ThresholdedImage> {
+  double _thresholdValue = 50;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Image.memory(
+          pic.Threshold(
+            threshold: _thresholdValue.round(),
+          ).apply(widget.image).content,
+          gaplessPlayback: true,
+        ),
+        Slider(
+          min: 0,
+          max: 255,
+          value: _thresholdValue,
+          onChanged: (value) {
+            setState(() {
+              _thresholdValue = value;
+            });
+          },
+        ),
+      ],
     );
   }
 }

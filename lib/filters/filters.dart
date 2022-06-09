@@ -1,3 +1,5 @@
 library filters;
 
-export 'basic_filters.dart';
+export 'brightness.dart';
+export 'simple_filters.dart';
+export 'threshold.dart';

@@ -18,15 +18,8 @@ clamp(int32_t number)
 }
 
 extern "C" __attribute__((visibility("default"))) __attribute__((used))
-int32_t
-native_add(int32_t x, int32_t y)
-{
-    return x + y;
-}
-
-extern "C" __attribute__((visibility("default"))) __attribute__((used))
 uint8_t *
-change_brightness(uint8_t *bitmap, int16_t brightness, uint32_t length)
+change_brightness(uint8_t *bitmap, uint32_t length, int16_t brightness)
 {
     for (int i = 0; i < length; i += 4)
     {
