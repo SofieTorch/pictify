@@ -1,12 +1,8 @@
 import 'dart:async';
-import 'dart:ffi';
-import 'package:ffi/ffi.dart' as ext_ffi;
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/rendering.dart';
-import 'package:pictify/models/filter.dart';
-import 'package:pictify/utils/utils.dart';
 
 class Process {
   static Future<ui.Image> providerToImage(ImageProvider provider) async {
@@ -35,23 +31,4 @@ class Process {
 
     return byteData.buffer.asUint8List();
   }
-
-  // static Future<Uint8List> transformImage(
-  //     ImageProvider provider, ImageTransform transform) async {
-  //   final image = await Process.providerToImage(provider);
-  //   final bitmap = await Process.imageToUInt8List(image);
-  //   final header = RGBA32Header(image.width, image.height);
-
-  //   final length = bitmap.length;
-  //   final Pointer<Uint8> pointer = ext_ffi.calloc<Uint8>(length);
-  //   pointer.asTypedList(length).setAll(0, bitmap);
-
-  //   final res = transform(pointer, length);
-  //   final result = res.asTypedList(length);
-
-  //   header.appendContent(result);
-  //   ext_ffi.calloc.free(pointer);
-
-  //   return header.headerBytes;
-  // }
 }
