@@ -11,8 +11,8 @@ class RGBA32Header {
   final int contentSize;
 
   RGBA32Header(this.width, this.height)
-      : assert(width & 3 == 0),
-        contentSize = width * height * pixelLength {
+      // : assert(width & 3 == 0),
+      : contentSize = width * height * pixelLength {
     fileLength = contentSize + headerSize;
     headedImage = Uint8List(fileLength);
     ByteData bd = headedImage.buffer.asByteData();
